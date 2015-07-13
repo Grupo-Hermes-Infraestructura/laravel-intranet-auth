@@ -16,9 +16,15 @@ class IntranetAuthServiceProvider extends ServiceProvider
      */
     public function boot(Repository $config)
     {
+        $this->loadViewsFrom(__DIR__ . '/../views', 'igh');
+
+        $this->publishes([
+            __DIR__ . '/../views' => base_path('resources/views/vendor/igh')
+        ]);
+
         $model = $config->get('auth.model');
 
-        Auth::extend('intranet', function($app) use($model) {
+        Auth::extend('ghi-intranet', function($app) use($model) {
             return new IntranetUserAuthProvider($model);
         });
     }
