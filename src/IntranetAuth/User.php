@@ -42,5 +42,5 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      *
      * @var bool
      */
-    protected $timestamps = false;
+    public $timestamps = false;
 }
