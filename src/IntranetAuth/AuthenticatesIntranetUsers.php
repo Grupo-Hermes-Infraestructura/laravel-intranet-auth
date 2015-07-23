@@ -21,13 +21,6 @@ trait AuthenticatesIntranetUsers
     protected $username = 'usuario';
 
     /**
-     * Ruta donde se muestra el formulario para login con la intranet
-     *
-     * @var string
-     */
-    protected $loginPath = '/auth/login';
-
-    /**
      * Show the application login form.
      *
      * @return \Illuminate\Http\Response
