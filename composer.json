@@ -1,7 +1,7 @@
 {
     "name": "ghi/laravel-intranet-auth",
     "description": "Paquete para integrar auntenticacion con la intranet de grupo hermes con Laravel",
-    "keywords": ["laravel", "intranet", "auth"],
+    "keywords": ["laravel", "intranet", "auth", "ghi"],
     "license": "MIT",
     "authors": [
         {
