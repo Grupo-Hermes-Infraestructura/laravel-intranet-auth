@@ -2,6 +2,8 @@
 
 namespace Ghi\IntranetAuth;
 
+use Illuminate\Http\Request;
+
 trait AuthenticatesIntranetUsers
 {
     /**
