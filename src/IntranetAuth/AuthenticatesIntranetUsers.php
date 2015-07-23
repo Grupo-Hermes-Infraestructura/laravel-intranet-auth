@@ -111,4 +111,14 @@ trait AuthenticatesIntranetUsers
             ThrottlesLogins::class, class_uses_recursive(get_class($this))
         );
     }
+
+    /**
+     * Get the login username to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginUsername()
+    {
+        return property_exists($this, 'username') ? $this->username : 'email';
+    }
 }
