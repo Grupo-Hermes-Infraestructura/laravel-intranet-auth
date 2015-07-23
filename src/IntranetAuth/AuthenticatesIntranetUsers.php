@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 trait AuthenticatesIntranetUsers
 {
     use RedirectsUsers;
-    
+
     /**
      * Nombre del campo que se usa para generar el LoginAttemptKey
      * para uso del Login Throttle
@@ -123,5 +123,15 @@ trait AuthenticatesIntranetUsers
     public function loginUsername()
     {
         return property_exists($this, 'username') ? $this->username : 'email';
+    }
+
+    /**
+     * Get the path to the login route.
+     *
+     * @return string
+     */
+    public function loginPath()
+    {
+        return property_exists($this, 'loginPath') ? $this->loginPath : '/auth/login';
     }
 }
