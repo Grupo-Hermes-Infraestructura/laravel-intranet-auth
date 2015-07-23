@@ -20,6 +20,20 @@ trait AuthenticatesIntranetUsers
     protected $loginPath = '/auth/login';
 
     /**
+     * Show the application login form.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getLogin()
+    {
+        if (view()->exists('auth.authenticate')) {
+            return view('auth.authenticate');
+        }
+
+        return view('auth.login');
+    }
+
+    /**
      * Se ocupa de la peticion de logueo con la intranet para la aplicacion.
      *
      * @param  Request $request
@@ -73,14 +87,13 @@ trait AuthenticatesIntranetUsers
     /**
      * Log the user out of the application.
      *
-     * @return Response
+     * @return \Illuminate\Http\Response
      */
     public function getLogout()
     {
-        auth()->logout();
+        Auth::logout();
+        Session::flush();
 
-        session()->flush();
-
-        return redirect('/');
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 }
