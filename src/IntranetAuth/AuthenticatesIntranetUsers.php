@@ -2,11 +2,14 @@
 
 namespace Ghi\IntranetAuth;
 
+use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 
 trait AuthenticatesIntranetUsers
 {
+    use RedirectsUsers;
+    
     /**
      * Nombre del campo que se usa para generar el LoginAttemptKey
      * para uso del Login Throttle
