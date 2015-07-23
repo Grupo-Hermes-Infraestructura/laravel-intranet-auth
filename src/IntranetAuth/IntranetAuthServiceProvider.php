@@ -16,10 +16,10 @@ class IntranetAuthServiceProvider extends ServiceProvider
      */
     public function boot(Repository $config)
     {
-        $this->loadViewsFrom(__DIR__ . '/../views', 'igh');
+        $this->loadViewsFrom(__DIR__ . '/../views', 'ghi');
 
         $this->publishes([
-            __DIR__ . '/../views' => base_path('resources/views/vendor/igh')
+            __DIR__ . '/../views' => base_path('resources/views/vendor/ghi')
         ]);
 
         $model = $config->get('auth.model');

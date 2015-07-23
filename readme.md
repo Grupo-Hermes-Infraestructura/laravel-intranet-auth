@@ -1,8 +1,8 @@
-# Easy GHI Intranet Authentication with Laravel
+# Autenticacion Intranet GHI con Laravel
 
-## Installation
+## Instalación
 
-First, pull in the package through Composer.
+Primero, instalar el paquete a través de composer.
 
 ```javascript
 "require": {
@@ -10,7 +10,7 @@ First, pull in the package through Composer.
 }
 ```
 
-If using Laravel 5, include the service provider within `app/config/app.php`.
+Si estas usando Laravel 5.*, incluye el service provider dentro de `app/config/app.php`.
 
 ```php
 'providers' => [
@@ -18,13 +18,13 @@ If using Laravel 5, include the service provider within `app/config/app.php`.
 ];
 ```
 
-Then you must configure the authentication driver within `app/config/auth.php`.
+Ahora se debe configurar el driver de autenticacion dentro de `app/config/auth.php`.
 
 ```php
     'driver' => 'ghi-intranet',
 ```
 
-Now, Laravel uses a default `User` model for authentication, you still can use this model, just change the `AuthenticatableUser` trait for `AuthenticatableIntranetUser`.
+Laravel usa el model `User` para autenticación, aun puedes seguir usando este modelo, solo cambia el `AuthenticatableUser` trait por `AuthenticatableIntranetUser`.
 
 ```php
 // app/Model.php
@@ -33,11 +33,17 @@ use Ghi\IntranetAuth\AuthenticatableIntranetUser;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
-        use AuthenticatableIntranetUser, CanResetPassword;
+    use AuthenticatableIntranetUser, CanResetPassword;
 
-        //
+    //
 }
 ```
+
+Este paquete incluye un modelo `User` que representa un usuario de la intranet Ghi.
+El modelo esta preconfigurado para usarse directamente con los usuarios de la intranet.
+En caso de que requieras la funcionalidad minima de este modelo, lo puedes usar para evitar configurar el que viene con Laravel.
+
+Para usarlo, solo tienes que cambiar la clave `model` dentro de `app/config/auth.php`.
 
 This package comes with a `Model` class that represents the Ghi intranet user.
 This model is preconfigured to map users from the Ghi database, so no need to create your own, just change the `model` key value within `config/auth.php`.
@@ -46,47 +52,62 @@ This model is preconfigured to map users from the Ghi database, so no need to cr
     'model' => Ghi\IntranetAuth\User::class,
 ```
 
-## Usage
+## Uso
 
-This package comes with a prebuilt login form view.
+Este paquete incluye una vista predefinida para hacer el login.
 
-To use it just create your own login blade template and within include:
+Para usarla, solo crea tu propia plantilla de login con blade y dentro de esta incluye lo siguiente:
 
 ```php
-@extends('app')
-
-@section('content')
-    @include(igh::login)
-@stop
+    @include(ghi::login)
 ```
 
-The form includes 3 inputs:
+El formulario de esta vista incluye 3 campos:
 - usuario
 - clave
 - remember_me
 
-This will be sent to your auth controller. Then you need to change the Laravel default postLogin method to accept this inputs.
+Estos datos seran enviados a tu controlador de autenticación (AuthController).
+
+Despues en tu controlador de autenticación, reemplaza el trait `AuthenticatesAndRegistersUsers` por `AuthenticatesIntranetUsers`
 
 ```php
 // app/Http/Controllers/AuthController.php
 
-public function postLogin(Request $request)
+use Ghi\IntranetAuth\AuthenticatesIntranetUsers;
+
+class AuthController extends Controller
 {
-    $this->validate($request, [
-        'usuario' => 'required', 'clave' => 'required',
-    ]);
-
-    $credentials = $request->only('usuario', 'clave');
-
-    if (auth()->attempt($credentials, $request->has('remember_me'))) {
-
-        return redirect('/home');
-    }
-
-    return redirect($this->loginPath())
-        ->withInput($request->only('usuario', 'remember_me'))
-        ->withErrors([
-            'usuario' => 'Usuario o clave invalidos.',
-        ]);
+    use AuthenticatesIntranetUsers, ThrottlesLogins;
+    
+    //
 }
+```
+
+Este trait incluye los metodos `postLogin` y `getLogout` predefinidos para autenticar y cerrar sesión.
+
+Puedes personalizar la ruta donde sera dirigido el usuario después de una autenticación correcta.
+Solo tienes que agregar esta propiedad en el controlador de autenticación:
+
+```php
+    protected $redirectPath = '/home';
+```
+
+Finalmente, define las rutas para autenticacion dentro de `app/Http/routes.php`
+
+```php
+    Route::get('auth/login', [
+        'as' => 'auth.login',
+        'uses' => 'Auth\AuthController@getLogin'
+    ]);
+    
+    Route::post('auth/login', [
+        'as' => 'auth.login',
+        'uses' => 'Auth\AuthController@postLogin'
+    ]);
+    
+    Route::get('auth/logout', [
+        'as' => 'auth.logout',
+        'uses' => 'Auth\AuthController@getLogout'
+    ]);
 ```

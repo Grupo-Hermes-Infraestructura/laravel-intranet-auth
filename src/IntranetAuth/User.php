@@ -12,11 +12,6 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
     use AuthenticatableIntranetUser, CanResetPassword;
 
     /**
-     * @var string
-     */
-    protected $connection = 'igh';
-
-    /**
      * The database table used by the model.
      *
      * @var string
@@ -41,4 +36,11 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
      * @var array
      */
     protected $hidden = ['clave', 'remember_token'];
+
+    /**
+     * Consider updated_at and created_at timestamps.
+     *
+     * @var bool
+     */
+    protected $timestamps = false;
 }
