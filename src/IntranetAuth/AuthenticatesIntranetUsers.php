@@ -64,8 +64,6 @@ trait AuthenticatesIntranetUsers
                 $this->clearLoginAttempts($request);
             }
 
-            flash("Bienvenido " . auth()->user()->nombre . "!");
-
             return redirect($this->redirectPath());
         }
 
