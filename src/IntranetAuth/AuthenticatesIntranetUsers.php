@@ -2,6 +2,7 @@
 
 namespace Ghi\IntranetAuth;
 
+use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Http\Request;
 
 trait AuthenticatesIntranetUsers
@@ -97,5 +98,17 @@ trait AuthenticatesIntranetUsers
         Session::flush();
 
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
+    }
+
+    /**
+     * Determine if the class is using the ThrottlesLogins trait.
+     *
+     * @return bool
+     */
+    protected function isUsingThrottlesLoginsTrait()
+    {
+        return in_array(
+            ThrottlesLogins::class, class_uses_recursive(get_class($this))
+        );
     }
 }
