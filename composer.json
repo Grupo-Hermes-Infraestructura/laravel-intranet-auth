@@ -14,7 +14,6 @@
             "Ghi\\IntranetAuth\\": "src/IntranetAuth/"
         }
     },
-    "minimum-stability": "stable",
     "require": {
         "laravel/framework": "^5.1",
         "ghi/core-domain": "dev-develop"
