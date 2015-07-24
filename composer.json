@@ -16,6 +16,7 @@
     },
     "minimum-stability": "dev",
     "require": {
-        "laravel/framework": "^5.1"
+        "laravel/framework": "^5.1",
+        "ghi/core-domain": "dev-develop"
     }
 }
