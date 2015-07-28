@@ -8,7 +8,6 @@ use Illuminate\Support\ServiceProvider;
 
 class IntranetAuthServiceProvider extends ServiceProvider
 {
-
     /**
      * Bootstrap the application services.
      *

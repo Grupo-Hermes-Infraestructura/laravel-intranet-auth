@@ -12,30 +12,30 @@
             </div>
         @endif
 
-        {!! Form::open() !!}
+        <form method="POST">
+            {{ csrf_field() }}
 
             <!-- Usuario Form Input -->
             <div class="form-group">
-                {!! Form::label('usuario', 'Usuario:') !!}
-                {!! Form::text('usuario', null, ['class' => 'form-control', 'required', 'autofocus']) !!}
+                <label for="usuario">Usuario:</label>
+                <input class="form-control" required="required" autofocus="autofocus" name="usuario" type="text" id="usuario">
             </div>
 
             <!-- Password Form Input -->
             <div class="form-group">
-                {!! Form::label('clave', 'Clave:') !!}
-                {!! Form::password('clave', ['class' => 'form-control', 'required']) !!}
+                <label for="clave">Clave:</label>
+                <input class="form-control" required="required" name="clave" type="password" id="clave">
             </div>
 
             <div class="checkbox">
                 <label>
-                    {!! Form::checkbox('remember_me', true) !!} Recordar mi sesión en este equipo
+                    <input name="remember_me" type="checkbox" value="1"> Recordar mi sesión en este equipo
                 </label>
             </div>
 
             <div class="form-group">
-                {!! Form::submit('Iniciar sesión', ['class' => 'btn btn-primary']) !!}
+                <input class="btn btn-primary" type="submit" value="Iniciar sesión">
             </div>
-
-        {!! Form::close() !!}
+        </form>
     </div>
 </div>

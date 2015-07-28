@@ -10,7 +10,7 @@ Primero, instalar el paquete a través de composer.
 }
 ```
 
-Si estas usando Laravel 5.*, incluye el service provider dentro de `app/config/app.php`.
+Si estas usando Laravel 5.*, incluye el service provider dentro de `config/app.php`.
 
 ```php
 'providers' => [
@@ -18,7 +18,7 @@ Si estas usando Laravel 5.*, incluye el service provider dentro de `app/config/a
 ];
 ```
 
-Ahora se debe configurar el driver de autenticacion dentro de `app/config/auth.php`.
+Ahora se debe configurar el driver de autenticacion dentro de `config/auth.php`.
 
 ```php
     'driver' => 'ghi-intranet',
@@ -43,10 +43,7 @@ Este paquete incluye un modelo `User` que representa un usuario de la intranet G
 El modelo esta preconfigurado para usarse directamente con los usuarios de la intranet.
 En caso de que requieras la funcionalidad minima de este modelo, lo puedes usar para evitar configurar el que viene con Laravel.
 
-Para usarlo, solo tienes que cambiar la clave `model` dentro de `app/config/auth.php`.
-
-This package comes with a `Model` class that represents the Ghi intranet user.
-This model is preconfigured to map users from the Ghi database, so no need to create your own, just change the `model` key value within `config/auth.php`.
+Para usarlo, solo tienes que cambiar la clave `model` dentro de `config/auth.php`.
 
 ```php
     'model' => Ghi\IntranetAuth\User::class,
