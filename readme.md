@@ -100,6 +100,14 @@ El formulario de esta vista incluye 3 campos:
 
 Estos datos seran enviados a tu controlador de autenticación (AuthController).
 
+Si requieres hacer algun cambio a esta vista, puedes publicarla con artisan:
+
+```php
+    php artisan vendor:publish
+```
+
+Esto copiara la vista `login.blade.php` que incluye el paquete en `resources/views/vendor/ghi` para que puedas hacerle los ajustes necesarios.
+
 ### Rutas
 
 Finalmente, define las rutas para autenticación dentro de `app/Http/routes.php`
