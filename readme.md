@@ -59,7 +59,7 @@ Para usarlo, solo tienes que cambiar la clave `model` dentro de `config/auth.php
 
 ### Controlador
 
-Despues en tu controlador de autenticación, reemplaza el trait `AuthenticatesAndRegistersUsers` por `AuthenticatesIntranetUsers`
+Después en tu controlador de autenticación, reemplaza el trait `AuthenticatesAndRegistersUsers` por `AuthenticatesIntranetUsers`
 
 ```php
 // app/Http/Controllers/AuthController.php
@@ -74,7 +74,7 @@ class AuthController extends Controller
 }
 ```
 
-Este trait incluye los metodos `postLogin` y `getLogout` predefinidos para autenticar y cerrar sesión.
+Este trait incluye los metodos `postLogin` y `getLogout` pre-definidos para autenticar y cerrar sesión.
 
 Puedes personalizar la ruta donde sera dirigido el usuario después de una autenticación correcta.
 Solo tienes que agregar esta propiedad en el controlador de autenticación:
@@ -85,12 +85,12 @@ Solo tienes que agregar esta propiedad en el controlador de autenticación:
 
 ### Vista
 
-Este paquete incluye una vista predefinida que contiene un formulario con los campos necesarios para hacer un login.
+Este paquete incluye una vista predefinida que contiene un formulario con los campos necesarios para hacer un login, ademas la vista esta optimizada y lista para usar con bootstrap.
 
 Para usarla, solo crea la vista `login.blade.php` en `resources/views/auth` y dentro de esta incluye lo siguiente:
 
 ```php
-    @include(ghi::login)
+    @include('ghi::login')
 ```
 
 El formulario de esta vista incluye 3 campos:
