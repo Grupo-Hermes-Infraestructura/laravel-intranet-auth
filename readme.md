@@ -35,7 +35,7 @@ Laravel utiliza el modelo `app/User` para autenticación, aun puedes seguir usan
 ```php
 // app/Model.php
 
-use Ghi\IntranetAuth\AuthenticatableIntranetUser;
+use Ghi\Core\App\Auth\AuthenticatableIntranetUser;
 
 class User extends Model implements AuthenticatableContract, CanResetPasswordContract
 {
@@ -52,7 +52,7 @@ El modelo esta pre-configurado para usarse directamente con los usuarios de la i
 Para usarlo, solo tienes que cambiar la clave `model` dentro de `config/auth.php`.
 
 ```php
-    'model' => Ghi\IntranetAuth\User::class,
+    'model' => Ghi\Core\Models\User::class,
 ```
 
 ## Uso
