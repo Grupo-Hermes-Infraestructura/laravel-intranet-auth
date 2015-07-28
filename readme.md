@@ -1,4 +1,4 @@
-# Autenticacion Intranet GHI con Laravel
+# Autenticación Intranet GHI con Laravel
 
 ## Instalación
 
@@ -18,13 +18,19 @@ Si estas usando Laravel 5.*, incluye el service provider dentro de `config/app.p
 ];
 ```
 
-Ahora se debe configurar el driver de autenticacion dentro de `config/auth.php`.
+## Configuración
+
+### Driver de Autenticación
+
+Se debe cambiar la clave `driver` dentro de `config/auth.php`.
 
 ```php
     'driver' => 'ghi-intranet',
 ```
 
-Laravel usa el model `User` para autenticación, aun puedes seguir usando este modelo, solo cambia el `AuthenticatableUser` trait por `AuthenticatableIntranetUser`.
+### Modelo de Autenticación
+
+Laravel utiliza el modelo `app/User` para autenticación, aun puedes seguir usando este modelo, solo cambia el `AuthenticatableUser` trait por `AuthenticatableIntranetUser`.
 
 ```php
 // app/Model.php
@@ -40,8 +46,8 @@ class User extends Model implements AuthenticatableContract, CanResetPasswordCon
 ```
 
 Este paquete incluye un modelo `User` que representa un usuario de la intranet Ghi.
-El modelo esta preconfigurado para usarse directamente con los usuarios de la intranet.
 En caso de que requieras la funcionalidad minima de este modelo, lo puedes usar para evitar configurar el que viene con Laravel.
+El modelo esta pre-configurado para usarse directamente con los usuarios de la intranet.
 
 Para usarlo, solo tienes que cambiar la clave `model` dentro de `config/auth.php`.
 
@@ -51,20 +57,7 @@ Para usarlo, solo tienes que cambiar la clave `model` dentro de `config/auth.php
 
 ## Uso
 
-Este paquete incluye una vista predefinida para hacer el login.
-
-Para usarla, solo crea tu propia plantilla de login con blade y dentro de esta incluye lo siguiente:
-
-```php
-    @include(ghi::login)
-```
-
-El formulario de esta vista incluye 3 campos:
-- usuario
-- clave
-- remember_me
-
-Estos datos seran enviados a tu controlador de autenticación (AuthController).
+### Controlador
 
 Despues en tu controlador de autenticación, reemplaza el trait `AuthenticatesAndRegistersUsers` por `AuthenticatesIntranetUsers`
 
@@ -90,7 +83,26 @@ Solo tienes que agregar esta propiedad en el controlador de autenticación:
     protected $redirectPath = '/home';
 ```
 
-Finalmente, define las rutas para autenticacion dentro de `app/Http/routes.php`
+### Vista
+
+Este paquete incluye una vista predefinida que contiene un formulario con los campos necesarios para hacer un login.
+
+Para usarla, solo crea la vista `login.blade.php` en `resources/views/auth` y dentro de esta incluye lo siguiente:
+
+```php
+    @include(ghi::login)
+```
+
+El formulario de esta vista incluye 3 campos:
+- usuario
+- clave
+- remember_me
+
+Estos datos seran enviados a tu controlador de autenticación (AuthController).
+
+### Rutas
+
+Finalmente, define las rutas para autenticación dentro de `app/Http/routes.php`
 
 ```php
     Route::get('auth/login', [
