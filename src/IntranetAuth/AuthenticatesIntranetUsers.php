@@ -21,6 +21,13 @@ trait AuthenticatesIntranetUsers
     protected $username = 'usuario';
 
     /**
+     * Nombre del campo que se usa como password
+     *
+     * @var string
+     */
+    protected $password = 'clave';
+
+    /**
      * Show the application login form.
      *
      * @return \Illuminate\Http\Response
@@ -43,7 +50,7 @@ trait AuthenticatesIntranetUsers
     public function postLogin(Request $request)
     {
         $this->validate($request, [
-            'usuario' => 'required', 'clave' => 'required',
+            $this->loginUsername() => 'required', $this->loginPassword() => 'required',
         ]);
 
         $throttles = $this->isUsingThrottlesLoginsTrait();
@@ -52,14 +59,10 @@ trait AuthenticatesIntranetUsers
             return $this->sendLockoutResponse($request);
         }
 
-        $credentials = $request->only('usuario', 'clave');
+        $credentials = $this->getCredentials($request);
 
         if (auth()->attempt($credentials, $request->has('remember_me'))) {
-            if ($throttles) {
-                $this->clearLoginAttempts($request);
-            }
-
-            return redirect($this->redirectPath());
+            return $this->handleUserWasAuthenticated($request, $throttles);
         }
 
         if ($throttles) {
@@ -67,10 +70,41 @@ trait AuthenticatesIntranetUsers
         }
 
         return redirect($this->loginPath())
-            ->withInput($request->only('usuario', 'remember_me'))
+            ->withInput($request->only($this->loginUsername(), 'remember_me'))
             ->withErrors([
-                'usuario' => $this->getFailedLoginMessage(),
+                $this->loginUsername() => $this->getFailedLoginMessage(),
             ]);
+    }
+
+    /**
+     * Send the response after the user was authenticated.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  bool  $throttles
+     * @return \Illuminate\Http\Response
+     */
+    protected function handleUserWasAuthenticated(Request $request, $throttles)
+    {
+        if ($throttles) {
+            $this->clearLoginAttempts($request);
+        }
+
+        if (method_exists($this, 'authenticated')) {
+            return $this->authenticated($request, Auth::user());
+        }
+
+        return redirect()->intended($this->redirectPath());
+    }
+
+    /**
+     * Get the needed authorization credentials from the request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return array
+     */
+    protected function getCredentials(Request $request)
+    {
+        return $request->only($this->loginUsername(), $this->loginPassword());
     }
 
     /**
@@ -116,6 +150,16 @@ trait AuthenticatesIntranetUsers
     public function loginUsername()
     {
         return property_exists($this, 'username') ? $this->username : 'email';
+    }
+
+    /**
+     * Get the login password to be used by the controller.
+     *
+     * @return string
+     */
+    public function loginPassword()
+    {
+        return property_exists($this, 'password') ? $this->password : 'password';
     }
 
     /**

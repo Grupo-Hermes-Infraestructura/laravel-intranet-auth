@@ -13,7 +13,7 @@
         @endif
 
         <form method="POST">
-            {{ csrf_field() }}
+            {!! csrf_field() !!}
 
             <!-- Usuario Form Input -->
             <div class="form-group">
