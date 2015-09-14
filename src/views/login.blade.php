@@ -12,8 +12,8 @@
             </div>
         @endif
 
-        <form method="POST">
-            {{ csrf_field() }}
+        <form method="POST" action="/auth/login">
+            {!! csrf_field() !!}
 
             <!-- Usuario Form Input -->
             <div class="form-group">
